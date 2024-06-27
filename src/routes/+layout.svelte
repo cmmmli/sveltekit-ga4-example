@@ -4,6 +4,8 @@
 	import { webVitals } from '$lib/vitals';
 	import Header from './Header.svelte';
 	import './styles.css';
+	import { PUBLIC_GTM_ID } from '$env/static/public';
+	import { onMount } from 'svelte';
 
 	/** @type {import('./$types').LayoutServerData} */
 	export let data;
@@ -15,6 +17,14 @@
 			analyticsId: data.analyticsId
 		});
 	}
+
+	onMount(() => {
+		window.dataLayer = window.dataLayer || [];
+		window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+		const gtmScript = document.createElement('script');
+		gtmScript.src = 'https://www.googletagmanager.com/gtm.js?id=' + PUBLIC_GTM_ID;
+		document.head.append(gtmScript);
+	});
 </script>
 
 <div class="app">
